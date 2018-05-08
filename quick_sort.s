@@ -8,10 +8,21 @@ size: .word 15
 
 partition:
 	# TODO: fill in your code here
+	addi $v0, $a2, 0		# For test, $v0 = end
 	jr $ra
 
 quick_sort:
 	# TODO: fill in your code here
+	slt $t1, $a1, $a2		# if start < end
+	bne $t1, 1, END			# is not true go END
+	jal partition			# partition
+	addi $a3, $a2, 0		# save end
+	addi $a2, $v0, -1		# end = pos-1
+	jal quick_sort			# qsort(data, start, pos-1)
+	addi $a2, $a3, 0		# load end
+	addi $a1, $v0, 1		# start = pos+1
+	jal quick_sort			# qsort(data, pos+1, end)
+	END:
 	jr $ra
 
 main:
